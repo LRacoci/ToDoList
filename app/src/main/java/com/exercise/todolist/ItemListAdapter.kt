@@ -1,5 +1,6 @@
 package com.exercise.todolist
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ class ItemListAdapter internal constructor(
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var items = emptyList<Item>() // Cached copy of items
+
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val showTitleDone: TextView = itemView.findViewById(R.id.showTitleDone)
@@ -30,10 +32,11 @@ class ItemListAdapter internal constructor(
         holder.showDescription.text = current.description
     }
 
-    internal fun setWords(items: List<Item>) {
+    internal fun setItems(items: List<Item>) {
         this.items = items
         notifyDataSetChanged()
     }
 
     override fun getItemCount() = items.size
+
 }

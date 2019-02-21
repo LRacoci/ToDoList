@@ -41,11 +41,11 @@ public abstract class ItemRoomDatabase : RoomDatabase() {
             private val scope: CoroutineScope
         ) : RoomDatabase.Callback() {
             fun populateDatabase(wordDao: ItemDao) {
-                wordDao.deleteAll()
+                //wordDao.deleteAll()
 
-                var item = Item("Title One", "This is one example of a description", false)
-                wordDao.insert(item)
-                item = Item("Title Two", "This is anther example of a description", false)
+                /*val item = Item("Title One", "This is one example of a description", false)
+                wordDao.insert(item)*/
+                //item = Item("Title Two", "This is anther example of a description", false)
             }
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)

@@ -15,16 +15,20 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     private val scope = CoroutineScope(coroutineContext)
 
     private val repository: ItemRepository
-    val allWords: LiveData<List<Item>>
+    val allItems: LiveData<List<Item>>
 
     init {
         val wordsDao = ItemRoomDatabase.getDatabase(application, scope).itemDao()
         repository = ItemRepository(wordsDao)
-        allWords = repository.allItems
+        allItems = repository.allItems
     }
 
     fun insert(item: Item) = scope.launch(Dispatchers.IO) {
         repository.insert(item)
+    }
+
+    fun delete(position: Int) = scope.launch(Dispatchers.IO) {
+        repository.delete(position)
     }
 
     override fun onCleared() {

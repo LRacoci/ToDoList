@@ -11,4 +11,12 @@ class ItemRepository(private val itemDao: ItemDao) {
     suspend fun insert(item: Item) {
         itemDao.insert(item)
     }
+    @WorkerThread
+    suspend fun delete(position: Int) {
+        allItems.value?.apply {
+            get(position).let {
+                itemDao.delete(it)
+            }
+        }
+    }
 }

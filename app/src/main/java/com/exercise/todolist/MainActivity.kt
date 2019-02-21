@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -34,12 +35,17 @@ class MainActivity : AppCompatActivity() {
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(this)
 
-        itemViewModel.allWords.observe(this, Observer { words ->
+        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
+
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(itemViewModel))
+        itemTouchHelper.attachToRecyclerView(recycler_view)
+
+        itemViewModel.allItems.observe(this, Observer { items ->
             // Update the cached copy of the words in the adapter.
-            words?.let { adapter.setWords(it) }
+            items?.let { adapter.setItems(it) }
         })
 
-        newItemButton.setOnClickListener { view ->
+        newItemButton.setOnClickListener {
             val intent = Intent(this@MainActivity, NewItemActivity::class.java)
             startActivityForResult(intent, newWordActivityRequestCode)
         }
@@ -51,8 +57,8 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
             data?.let {
-                val title = it.getStringExtra(NewItemActivity.TITLE)
                 val description = it.getStringExtra(NewItemActivity.DESCRIPTION)
+                val title = it.getStringExtra(NewItemActivity.TITLE)
                 val done = false // Starts false
                 val item = Item(title, description, done)
                 itemViewModel.insert(item)
