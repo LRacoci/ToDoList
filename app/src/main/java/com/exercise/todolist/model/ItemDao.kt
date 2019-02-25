@@ -1,7 +1,8 @@
-package com.exercise.todolist
+package com.exercise.todolist.model
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
+import com.exercise.todolist.model.Item
 
 @Dao
 interface ItemDao {

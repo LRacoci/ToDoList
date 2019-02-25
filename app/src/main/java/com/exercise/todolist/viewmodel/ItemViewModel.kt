@@ -1,8 +1,11 @@
-package com.exercise.todolist
+package com.exercise.todolist.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import com.exercise.todolist.model.Item
+import com.exercise.todolist.model.ItemRoomDatabase
+import com.exercise.todolist.repository.ItemRepository
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.Main
 import kotlin.coroutines.experimental.CoroutineContext
@@ -15,7 +18,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     private val scope = CoroutineScope(coroutineContext)
 
     private val repository: ItemRepository
-    val allItems: LiveData<List<Item>>
+    var allItems: LiveData<List<Item>>
 
     init {
         val wordsDao = ItemRoomDatabase.getDatabase(application, scope).itemDao()
@@ -34,5 +37,14 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     override fun onCleared() {
         super.onCleared()
         parentJob.cancel()
+    }
+
+    operator fun get(position: Int): Item? {
+        return repository.allItems.value?.get(position)
+    }
+
+    operator fun set(position: Int, item: Item) {
+        delete(position)
+        insert(item)
     }
 }

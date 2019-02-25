@@ -1,18 +1,20 @@
-package com.exercise.todolist
+package com.exercise.todolist.repository
 
 import android.arch.lifecycle.LiveData
 import android.support.annotation.WorkerThread
+import com.exercise.todolist.model.Item
+import com.exercise.todolist.model.ItemDao
 
 class ItemRepository(private val itemDao: ItemDao) {
 
-    val allItems: LiveData<List<Item>> = itemDao.getAll()
+    var allItems: LiveData<List<Item>> = itemDao.getAll()
 
     @WorkerThread
-    suspend fun insert(item: Item) {
+    fun insert(item: Item) {
         itemDao.insert(item)
     }
     @WorkerThread
-    suspend fun delete(position: Int) {
+    fun delete(position: Int) {
         allItems.value?.apply {
             get(position).let {
                 itemDao.delete(it)

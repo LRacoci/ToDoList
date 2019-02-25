@@ -1,4 +1,4 @@
-package com.exercise.todolist
+package com.exercise.todolist.model
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
@@ -7,11 +7,11 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "items_table")
 class Item(
     @ColumnInfo(name = "title")
-    val title: String,
+    var title: String,
     @ColumnInfo(name = "description")
-    val description: String,
+    var description: String,
     @ColumnInfo(name = "done")
-    val done: Boolean
+    var done: Boolean
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "item_id")

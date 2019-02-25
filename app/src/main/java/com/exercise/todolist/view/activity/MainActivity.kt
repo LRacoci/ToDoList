@@ -1,4 +1,4 @@
-package com.exercise.todolist
+package com.exercise.todolist.view.activity
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -11,6 +11,11 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.exercise.todolist.*
+import com.exercise.todolist.model.Item
+import com.exercise.todolist.view.ItemListAdapter
+import com.exercise.todolist.view.SwipeToDeleteCallback
+import com.exercise.todolist.viewmodel.ItemViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -31,11 +36,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         //val recycler_view = findViewById<RecyclerView>(R.id.recycler_view)
-        val adapter = ItemListAdapter(this)
+        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
+        val adapter = ItemListAdapter(this, itemViewModel)
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(this)
 
-        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
 
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(itemViewModel))
         itemTouchHelper.attachToRecyclerView(recycler_view)
@@ -47,18 +52,19 @@ class MainActivity : AppCompatActivity() {
 
         newItemButton.setOnClickListener {
             val intent = Intent(this@MainActivity, NewItemActivity::class.java)
-            startActivityForResult(intent, newWordActivityRequestCode)
+            startActivityForResult(intent,
+                newWordActivityRequestCode
+            )
         }
-
-
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val description = it.getStringExtra(NewItemActivity.DESCRIPTION)
-                val title = it.getStringExtra(NewItemActivity.TITLE)
+            data?.apply {
+                val title = getStringExtra(NewItemActivity.TITLE)
+                val description = getStringExtra(NewItemActivity.DESCRIPTION)
                 val done = false // Starts false
                 val item = Item(title, description, done)
                 itemViewModel.insert(item)

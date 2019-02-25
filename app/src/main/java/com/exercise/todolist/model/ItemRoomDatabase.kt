@@ -1,4 +1,4 @@
-package com.exercise.todolist
+package com.exercise.todolist.model
 
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Database
