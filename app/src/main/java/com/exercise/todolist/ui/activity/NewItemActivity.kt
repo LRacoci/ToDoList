@@ -1,4 +1,4 @@
-package com.exercise.todolist.view.activity
+package com.exercise.todolist.ui.activity
 
 import android.app.Activity
 import android.content.Intent

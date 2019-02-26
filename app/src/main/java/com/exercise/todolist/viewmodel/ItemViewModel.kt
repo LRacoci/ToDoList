@@ -3,6 +3,7 @@ package com.exercise.todolist.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.util.Log
 import com.exercise.todolist.model.Item
 import com.exercise.todolist.model.ItemRoomDatabase
 import com.exercise.todolist.repository.ItemRepository
@@ -24,6 +25,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         val wordsDao = ItemRoomDatabase.getDatabase(application, scope).itemDao()
         repository = ItemRepository(wordsDao)
         allItems = repository.allItems
+        Log.v("allItems", allItems.value.toString())
     }
 
     fun insert(item: Item) = scope.launch(Dispatchers.IO) {
@@ -32,6 +34,12 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
 
     fun update(item: Item) = scope.launch(Dispatchers.IO) {
         repository.update(item)
+    }
+    fun update(item: Item, isChecked: Boolean) {
+        val newItem = item.apply {
+            done = isChecked
+        }
+        update(newItem)
     }
 
     fun delete(position: Int) = scope.launch(Dispatchers.IO) {

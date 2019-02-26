@@ -1,4 +1,4 @@
-package com.exercise.todolist.view.activity
+package com.exercise.todolist.ui.activity
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -13,8 +13,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.exercise.todolist.*
 import com.exercise.todolist.model.Item
-import com.exercise.todolist.view.ItemListAdapter
-import com.exercise.todolist.view.SwipeToDeleteCallback
+import com.exercise.todolist.ui.ItemListAdapter
+import com.exercise.todolist.ui.SwipeToDeleteCallback
 import com.exercise.todolist.viewmodel.ItemViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
