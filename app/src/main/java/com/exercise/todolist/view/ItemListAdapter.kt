@@ -26,14 +26,17 @@ class ItemListAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val current = itemViewModel[position] ?: items[position]
-        // holder.showDescription.visibility = View.GONE
-        holder.showTitle.text = current.title
-        holder.showDescription.text = current.description
-        holder.showDone.isChecked = current.done
-        holder.showDone.setOnCheckedChangeListener { _, _ ->
-            itemViewModel[position] = current.apply {
-                done = ! done
+        val current = itemViewModel[position] //?: items[position]
+        current?.let{
+            // holder.showDescription.visibility = View.GONE
+            holder.showTitle.text = current.title
+            holder.showDescription.text = current.description
+            holder.showDone.isChecked = current.done
+            holder.showDone.setOnCheckedChangeListener { _, isChecked ->
+                val newItem = items[position].apply {
+                    done = isChecked
+                }
+                itemViewModel.update(newItem)
             }
         }
     }

@@ -10,15 +10,16 @@ class ItemRepository(private val itemDao: ItemDao) {
     var allItems: LiveData<List<Item>> = itemDao.getAll()
 
     @WorkerThread
-    fun insert(item: Item) {
+    suspend fun insert(item: Item) {
         itemDao.insert(item)
     }
     @WorkerThread
-    fun delete(position: Int) {
-        allItems.value?.apply {
-            get(position).let {
-                itemDao.delete(it)
-            }
-        }
+    suspend fun update(item: Item) {
+        itemDao.update(item)
+    }
+
+    @WorkerThread
+    suspend fun delete(item: Item) {
+        itemDao.delete(item)
     }
 }

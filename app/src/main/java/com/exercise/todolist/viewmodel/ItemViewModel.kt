@@ -30,8 +30,14 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         repository.insert(item)
     }
 
+    fun update(item: Item) = scope.launch(Dispatchers.IO) {
+        repository.update(item)
+    }
+
     fun delete(position: Int) = scope.launch(Dispatchers.IO) {
-        repository.delete(position)
+        allItems.value?.apply {
+            repository.delete(get(position))
+        }
     }
 
     override fun onCleared() {
@@ -43,8 +49,12 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         return repository.allItems.value?.get(position)
     }
 
-    operator fun set(position: Int, item: Item) {
+    /*operator fun set(position: Int, item: Item) {
+        allItems.value?.apply {
+            repository.update(get(position))
+        }
+        update(position[position])
         delete(position)
         insert(item)
-    }
+    }*/
 }
