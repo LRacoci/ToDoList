@@ -20,6 +20,8 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: ItemRepository
     var allItems: LiveData<List<Item>>
+    var size: Int = 0
+        get() = repository.allItems.value?.size ?: allItems.value?.size ?: 0
 
     init {
         val wordsDao = ItemRoomDatabase.getDatabase(application, scope).itemDao()
@@ -35,6 +37,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     fun update(item: Item) = scope.launch(Dispatchers.IO) {
         repository.update(item)
     }
+
     fun update(item: Item, isChecked: Boolean) {
         val newItem = item.apply {
             done = isChecked
@@ -53,8 +56,8 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         parentJob.cancel()
     }
 
-    operator fun get(position: Int): Item? {
-        return repository.allItems.value?.get(position)
+    operator fun get(position: Int): Item {
+        return repository.allItems.value?.get(position) ?: allItems.value?.get(position) ?: Item.NONE
     }
 
     /*operator fun set(position: Int, item: Item) {

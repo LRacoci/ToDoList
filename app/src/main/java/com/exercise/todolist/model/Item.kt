@@ -16,4 +16,9 @@ class Item(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "item_id")
     var item_id : Int? = null
+
+    companion object {
+        val NONE = Item("Null", "Null", false)
+    }
+
 }

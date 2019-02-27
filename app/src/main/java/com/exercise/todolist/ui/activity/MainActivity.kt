@@ -45,10 +45,6 @@ class MainActivity : AppCompatActivity() {
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(itemViewModel))
         itemTouchHelper.attachToRecyclerView(recycler_view)
 
-        itemViewModel.allItems.observe(this, Observer { items ->
-            // Update the cached copy of the words in the adapter.
-            items?.let { adapter.setItems(it) }
-        })
 
         newItemButton.setOnClickListener {
             val intent = Intent(this@MainActivity, NewItemActivity::class.java)
